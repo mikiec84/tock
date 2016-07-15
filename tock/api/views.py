@@ -13,6 +13,10 @@ from hours.models import TimecardObject, Timecard, ReportingPeriod
 from employees.models import UserData
 
 from rest_framework import serializers, generics, pagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 import csv
 from .renderers import stream_csv
@@ -131,6 +135,8 @@ class UserDataView(generics.ListAPIView):
     pagination_class = JumboResultsSetPagination
 
 class ProjectList(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     pagination_class = JumboResultsSetPagination
